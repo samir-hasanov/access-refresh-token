@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/click_payment
+    url: jdbc:postgresql://localhost:5432/pay_mobile
     username: postgres
     password: 12345
     driver-class-name: org.postgresql.Driver

@@ -28,19 +28,27 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/signUp","/auth/login").permitAll()
+                .requestMatchers("/auth/**").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/pay/**")
-                .authenticated().and()
+//                .hasAnyRole("ADMIN","MANAGER","OPERATOR")
+//                .anyRequest()
+                .authenticated()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+
+
     }
+
 
     @Bean
     public UserDetailsService userDetailsService() {

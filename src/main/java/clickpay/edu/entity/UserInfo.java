@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,7 +16,7 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(schema = "click")
+@DynamicInsert
 public class UserInfo {
 
     @Id
@@ -24,6 +26,8 @@ public class UserInfo {
     private String name;
     private String email;
     private String password;
+    @ColumnDefault(value = "1")
+    private Integer active;
     @ManyToMany
     private Collection<Role> roles=new ArrayList<>();
 

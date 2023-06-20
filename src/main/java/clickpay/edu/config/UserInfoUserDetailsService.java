@@ -1,7 +1,10 @@
 package clickpay.edu.config;
 
 import clickpay.edu.entity.UserInfo;
+import clickpay.edu.exception.EnumCode;
+import clickpay.edu.exception.MyException;
 import clickpay.edu.repository.UserInfoRepository;
+import org.aspectj.apache.bcel.ExceptionConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,9 +20,12 @@ public class UserInfoUserDetailsService implements UserDetailsService {
     private UserInfoRepository repository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserInfo> userInfo = repository.findUserInfoByEmail(username);
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UserInfo userInfo = repository.findUserInfoByEmailAndActive(email, EnumCode.Active.getValue());
+        if(userInfo==null){
+            throw new UsernameNotFoundException("user not found: "+userInfo);
+        }
+        return new UserInfoUserDetails(userInfo);
 
     }
 }
